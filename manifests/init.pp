@@ -258,7 +258,7 @@ class galera(
 ) {
   if $configure_repo {
     include galera::repo
-    Class['::galera::repo'] -> Class['mysql::server']
+    Class['::galera::repo'] -> Anchor['mysql::server::start']
   }
 
   if $configure_firewall {

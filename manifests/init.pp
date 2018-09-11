@@ -258,7 +258,7 @@ class galera(
 ) {
   if $configure_repo {
     include galera::repo
-    Class['::galera::repo'] -> Anchor['mysql::server::start']
+    Class['::galera::repo'] -> Class['mysql::server']
   }
 
   if $configure_firewall {
@@ -341,6 +341,7 @@ class galera(
     {
       ensure  => $package_ensure,
       before  => Class['mysql::server::install'],
+      require => Class['::galera::repo']
     })
   }
 
@@ -351,6 +352,7 @@ class galera(
   package {[ $galera::galera_package_name ] :
     ensure => $galera_package_ensure,
     before => Class['mysql::server::install'],
+    require => Class['::galera::repo']
   }
 
   if ($fqdn == $galera_master) {
